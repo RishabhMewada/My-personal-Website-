@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>observatory — a personal console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== TOP BAR (mobile) ===== -->
+<div class="topbar">
+  <span class="wordmark" id="wordmarkMobile">observatory</span>
+  <button class="icon-btn" id="settingsBtnMobile" aria-label="Open settings">⚙</button>
+</div>
+
+<!-- ===== LEFT RAIL ===== -->
+<aside class="rail">
+  <div class="rail-top">
+    <span class="wordmark" id="wordmark">observatory</span>
+    <p class="rail-sub">a field guide to your work</p>
+  </div>
+  <nav class="rail-nav">
+    <a href="#status"><em>01</em>status</a>
+    <a href="#projects"><em>02</em>projects</a>
+    <a href="#activity"><em>03</em>activity</a>
+    <a href="#photos"><em>04</em>photos</a>
+    <a href="#elsewhere"><em>05</em>elsewhere</a>
+  </nav>
+  <div class="rail-bottom">
+    <span class="rail-time" id="railTime">— : — : —</span>
+    <button class="icon-btn" id="settingsBtn" aria-label="Open settings">⚙</button>
+  </div>
+</aside>
+
+<!-- ===== SETTINGS DRAWER ===== -->
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <span>settings</span>
+    <button class="icon-btn" id="closeDrawer" aria-label="Close settings">✕</button>
+  </div>
+  <div class="drawer-body">
+    <label class="field">
+      <span>GitHub username</span>
+      <input type="text" id="ghUsername" placeholder="e.g. octocat">
+    </label>
+    <label class="field">
+      <span>Display name</span>
+      <input type="text" id="displayName" placeholder="Your name">
+    </label>
+    <label class="field">
+      <span>Tagline</span>
+      <input type="text" id="tagline" placeholder="What you do">
+    </label>
+    <label class="field">
+      <span>Bio</span>
+      <textarea id="bioText" rows="4" placeholder="A few lines about you"></textarea>
+    </label>
+    <label class="field">
+      <span>Work status</span>
+      <select id="workStatus">
+        <option value="available">available</option>
+        <option value="building">building</option>
+        <option value="focus">focus mode</option>
+        <option value="away">away</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Currently working on</span>
+      <input type="text" id="currentWork" placeholder="What you're shipping right now">
+    </label>
+    <label class="field">
+      <span>Location</span>
+      <input type="text" id="locationText" placeholder="Where you're based">
+    </label>
+    <div class="field-row">
+      <label class="field">
+        <span>Twitter / X handle</span>
+        <input type="text" id="twitterHandle" placeholder="handle, no @">
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input type="text" id="emailAddr" placeholder="you@domain.com">
+      </label>
+    </div>
+    <button class="btn-primary" id="saveSettings">save &amp; sync</button>
+    <p class="drawer-note">Stored locally in your browser. Projects and activity are pulled live from the GitHub public API — no login required.</p>
+  </div>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<main>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <p class="eyebrow">a live map of what you're building</p>
+    <h1 class="hero-headline">Field notes from <em id="heroName">someone</em></h1>
+    <p class="hero-tagline" id="heroTagline">open settings to point this at a GitHub username</p>
+    <p class="hero-bio" id="heroBio">This page charts your repositories like a small sky — recent work sits close, older work drifts out. Everything below updates from what's actually in your account.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" id="heroGithubLink" href="#" target="_blank" rel="noopener">view github ↗</a>
+      <a class="link-arrow" href="#projects">see projects →</a>
+    </div>
+    <div class="lang-row" id="langRow"></div>
+
+    <div class="orbit-wrap">
+      <div class="orbit-chart" id="orbitChart">
+        <p class="empty-state">Add a GitHub username in settings to plot your orbit.</p>
+      </div>
+      <ul class="orbit-legend" id="orbitLegend"></ul>
+    </div>
+  </section>
+
+  <!-- ===== STATUS ===== -->
+  <section class="block" id="status">
+    <p class="block-index">01</p>
+    <h2>Status</h2>
+    <div class="status-row">
+      <div class="gauge-wrap" id="gaugeWrap"></div>
+      <div class="status-copy">
+        <p class="status-word" id="statusWord">available</p>
+        <p class="status-detail" id="statusDetail">Set a "currently working on" note in settings to show it here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="block" id="projects">
+    <p class="block-index">02</p>
+    <h2>Projects</h2>
+    <p class="block-sub" id="projectsSub">pulled live from your GitHub repositories</p>
+    <div class="project-grid" id="projectGrid">
+      <div class="empty-state">Add your GitHub username in settings to load projects.</div>
+    </div>
+  </section>
+
+  <!-- ===== ACTIVITY ===== -->
+  <section class="block" id="activity">
+    <p class="block-index">03</p>
+    <h2>Activity</h2>
+    <p class="block-sub">a transmission log of recent commits &amp; events</p>
+    <div class="log-panel">
+      <div class="log-body" id="activityFeed">
+        <p class="log-line log-muted">awaiting a GitHub username to receive a signal…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PHOTOS ===== -->
+  <section class="block" id="photos">
+    <p class="block-index">04</p>
+    <h2>Photos</h2>
+    <p class="block-sub">screenshots, builds, behind the scenes</p>
+    <div class="photo-grid" id="photoGrid"></div>
+    <form class="photo-add" id="photoAddForm">
+      <input type="url" id="photoUrl" placeholder="image URL" required>
+      <input type="text" id="photoCaption" placeholder="caption (optional)">
+      <button type="submit" class="link-arrow">add photo →</button>
+    </form>
+  </section>
+
+  <!-- ===== ELSEWHERE ===== -->
+  <section class="block" id="elsewhere">
+    <p class="block-index">05</p>
+    <h2>Elsewhere</h2>
+    <p class="block-sub">other places to find this work</p>
+    <ul class="elsewhere-list">
+      <li><a id="footGithub" href="#" target="_blank" rel="noopener"><span class="dot dot-gold"></span>GitHub <span class="arrow">→</span></a></li>
+      <li><a id="footTwitter" href="#" target="_blank" rel="noopener"><span class="dot dot-teal"></span>Twitter <span class="arrow">→</span></a></li>
+      <li><a id="footEmail" href="#"><span class="dot dot-lav"></span>Email <span class="arrow">→</span></a></li>
+    </ul>
+  </section>
+
+  <footer class="site-footer">
+    <span id="footCopy">© 2026 observatory</span>
+    <span>html · css · js — data via the github public api</span>
+  </footer>
+
+</main>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+  <img id="lightboxImg" src="" alt="">
+  <p id="lightboxCaption"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
