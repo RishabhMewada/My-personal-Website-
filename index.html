@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>console — personal dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== MENU BAR ===== -->
+<header class="menubar">
+  <div class="menubar-left">
+    <span class="menubar-dot" id="statusDot"></span>
+    <span class="menubar-name" id="menuName">console</span>
+    <span class="menubar-sep">/</span>
+    <span class="menubar-status" id="menuStatus">available</span>
+  </div>
+  <nav class="menubar-nav">
+    <a href="#work">work</a>
+    <a href="#projects">projects</a>
+    <a href="#activity">activity</a>
+    <a href="#photos">photos</a>
+  </nav>
+  <div class="menubar-right">
+    <span class="menubar-clock" id="menuClock">00:00:00</span>
+    <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Open settings">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===== SETTINGS DRAWER ===== -->
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <span>settings</span>
+    <button class="icon-btn" id="closeDrawer" aria-label="Close settings">✕</button>
+  </div>
+  <div class="drawer-body">
+    <label class="field">
+      <span>GitHub username</span>
+      <input type="text" id="ghUsername" placeholder="e.g. octocat">
+    </label>
+    <label class="field">
+      <span>Display name</span>
+      <input type="text" id="displayName" placeholder="Your name">
+    </label>
+    <label class="field">
+      <span>Tagline</span>
+      <input type="text" id="tagline" placeholder="What you do">
+    </label>
+    <label class="field">
+      <span>Bio</span>
+      <textarea id="bioText" rows="4" placeholder="A few lines about you"></textarea>
+    </label>
+    <label class="field">
+      <span>Work status</span>
+      <select id="workStatus">
+        <option value="available">available</option>
+        <option value="building">building</option>
+        <option value="focus">focus mode</option>
+        <option value="away">away</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Currently working on</span>
+      <input type="text" id="currentWork" placeholder="What you're shipping right now">
+    </label>
+    <label class="field">
+      <span>Location</span>
+      <input type="text" id="locationText" placeholder="Where you're based">
+    </label>
+    <div class="field-row">
+      <label class="field">
+        <span>Twitter / X handle</span>
+        <input type="text" id="twitterHandle" placeholder="handle, no @">
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input type="text" id="emailAddr" placeholder="you@domain.com">
+      </label>
+    </div>
+    <button class="btn-primary" id="saveSettings">save & sync</button>
+    <p class="drawer-note">Everything here is stored locally in your browser. Projects and activity are pulled live from the GitHub public API — no login required.</p>
+  </div>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<main>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">// personal dashboard</p>
+        <h1 id="heroName">set your name in settings</h1>
+        <p class="hero-tagline" id="heroTagline">click the gear icon to configure this console</p>
+        <p class="hero-bio" id="heroBio">This site pulls your repositories and recent GitHub activity live and renders them into a personal control panel — like a cockpit for your work.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" id="heroGithubLink" href="#" target="_blank" rel="noopener">view github ↗</a>
+          <a class="btn-ghost" href="#projects">see projects</a>
+        </div>
+        <div class="hero-meta">
+          <span id="heroLocation">— location not set —</span>
+          <span class="hero-meta-sep">·</span>
+          <span id="heroLocalTime">local time —:—:—</span>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="avatar-frame">
+          <img id="avatarImg" src="" alt="" />
+          <div class="avatar-fallback" id="avatarFallback">?</div>
+        </div>
+        <div class="hero-stats" id="heroStats">
+          <div class="stat"><span class="stat-num" id="statRepos">–</span><span class="stat-label">repos</span></div>
+          <div class="stat"><span class="stat-num" id="statFollowers">–</span><span class="stat-label">followers</span></div>
+          <div class="stat"><span class="stat-num" id="statStars">–</span><span class="stat-label">stars earned</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORK STATUS ===== -->
+  <section class="panel status-panel" id="work">
+    <div class="panel-head">
+      <h2>status</h2>
+      <span class="panel-sub">what's happening right now</span>
+    </div>
+    <div class="status-card">
+      <div class="status-indicator">
+        <span class="pulse-dot" id="statusPulse"></span>
+        <span class="status-word" id="statusWord">available</span>
+      </div>
+      <p class="status-detail" id="statusDetail">Set a "currently working on" note in settings to show it here.</p>
+      <div class="status-bar-track"><div class="status-bar-fill" id="statusBarFill"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="panel" id="projects">
+    <div class="panel-head">
+      <h2>projects</h2>
+      <span class="panel-sub" id="projectsSub">pulled live from your GitHub repositories</span>
+    </div>
+    <div class="project-grid" id="projectGrid">
+      <div class="empty-state">Add your GitHub username in settings to load projects.</div>
+    </div>
+  </section>
+
+  <!-- ===== ACTIVITY ===== -->
+  <section class="panel" id="activity">
+    <div class="panel-head">
+      <h2>activity</h2>
+      <span class="panel-sub">recent commits & events, straight off the wire</span>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+        <span class="terminal-title">activity.log</span>
+      </div>
+      <div class="terminal-body" id="activityFeed">
+        <p class="term-line term-muted">$ waiting for a GitHub username to stream events…<span class="cursor">_</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PHOTOS ===== -->
+  <section class="panel" id="photos">
+    <div class="panel-head">
+      <h2>photos</h2>
+      <span class="panel-sub">screenshots, builds, behind the scenes</span>
+    </div>
+    <div class="photo-grid" id="photoGrid"></div>
+    <form class="photo-add" id="photoAddForm">
+      <input type="url" id="photoUrl" placeholder="image URL" required>
+      <input type="text" id="photoCaption" placeholder="caption (optional)">
+      <button type="submit" class="btn-ghost">add photo</button>
+    </form>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span>built with html · css · js — data via the github public api</span>
+  <div class="footer-links">
+    <a id="footGithub" href="#" target="_blank" rel="noopener">github</a>
+    <a id="footTwitter" href="#" target="_blank" rel="noopener">twitter</a>
+    <a id="footEmail" href="#">email</a>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+  <img id="lightboxImg" src="" alt="">
+  <p id="lightboxCaption"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
